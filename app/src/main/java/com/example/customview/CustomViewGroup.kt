@@ -9,28 +9,24 @@ class CustomViewGroup @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ViewGroup(context, attrs, defStyleAttr) {
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         val count = childCount
-        var leftPadding = left + paddingLeft
-        var topPadding = top + paddingTop
+        var left = l + paddingLeft
+        var top = t + paddingTop
         var rowHeight = 0
         repeat(count) {
-            getChildAt(it).apply {
-                if (leftPadding + measuredWidth < right - paddingRight) {
-                    layout(
-                        leftPadding,
-                        topPadding,
-                        leftPadding + measuredWidth,
-                        topPadding + measuredHeight
-                    )
-                    leftPadding += measuredWidth
-                } else {
-                    leftPadding = left + paddingLeft
-                    topPadding = top + paddingTop
-                    rowHeight = 0
-                }
-                if (measuredHeight > rowHeight) rowHeight = measuredHeight
+            val child = getChildAt(it)
+            val childWidth = child.measuredWidth
+            val childHeight = child.measuredHeight
+            if (left + childWidth < r - paddingRight) {
+                child.layout(left, top, left + childWidth, top + childHeight)
+                left += childWidth
+            } else {
+                left = l + paddingLeft
+                top += rowHeight
+                rowHeight = 0
             }
+            if (childHeight > rowHeight) rowHeight = childHeight
         }
     }
 
@@ -41,17 +37,19 @@ class CustomViewGroup @JvmOverloads constructor(
         var left = 0
         var top = 0
         repeat(childCount) {
-            getChildAt(it).apply {
-                if (left + measuredWidth < width) {
-                    left += measuredWidth
-                } else {
-                    if (left > maxWidth) maxWidth = left
-                    left = 0
-                    top += rowHeight
-                    rowHeight = 0
-                }
-                if (measuredHeight > rowHeight) rowHeight = measuredHeight
+            val child = getChildAt(it)
+            measureChild(child, widthMeasureSpec, heightMeasureSpec)
+            val childWidth = child.measuredWidth
+            val childHeight = child.measuredHeight
+            if (left + childWidth < width) {
+                left += childHeight
+            } else {
+                if (left > maxWidth) maxWidth = left
+                left = 0
+                top += rowHeight
+                rowHeight = 0
             }
+            if (childHeight > rowHeight) rowHeight = childHeight
         }
         if (left > maxWidth) maxWidth = left
         maxHeight = top + rowHeight

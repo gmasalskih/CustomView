@@ -11,11 +11,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val cvg = findViewById<CustomViewGroup>(R.id.cvg)
-        repeat(50) {
-            val cv = CustomViewGroup(this)
-            val random = Random(0).nextInt(100,1000)
+        val random = Random(10)
+
+        repeat(500) {
+            val cv = CustomView(this)
             cv.layoutParams =
-                ViewGroup.LayoutParams(random, random)
+                ViewGroup.LayoutParams(random.nextInt(100,1000), random.nextInt(100,1000))
             cv.setPadding(2,2,2,2)
             cvg.addView(cv)
         }

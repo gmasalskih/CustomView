@@ -33,12 +33,10 @@ class CustomView @JvmOverloads constructor(
 
     init {
         with(ta) {
-            if (hasValue(R.styleable.CustomView_bgc)) {
-                try {
-                    bgColor = getColor(R.styleable.CustomView_bgc, Color.YELLOW)
-                } finally {
-                    recycle()
-                }
+            try {
+                bgColor = getColor(R.styleable.CustomView_bgc, Color.YELLOW)
+            } finally {
+                recycle()
             }
         }
 

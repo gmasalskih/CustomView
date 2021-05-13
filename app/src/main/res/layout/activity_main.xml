@@ -6,10 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.example.customview.CustomViewGroup
-        android:id="@+id/cvg"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center" />
+        android:layout_height="match_parent">
 
+        <com.example.customview.CustomViewGroup
+            android:id="@+id/cvg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </ScrollView>
 </FrameLayout>
